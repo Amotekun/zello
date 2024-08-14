@@ -39,13 +39,19 @@ export const LoginForm = () => {
         try {
             console.log("Login VALUES", values);
 
-            await login(values).unwrap();
-            dispatch(setAuth(true));
-            toast({
-                title: "Login successful",
-                variant: "default",
-            })
-            router.push('/')
+            const response = await login(values).unwrap();
+            const {access} = response;
+
+            if (access) {    
+                localStorage.setItem('userToken', access);
+                
+                dispatch(setAuth({userToken: access}));
+                toast({
+                    title: "Login successful",
+                    variant: "default",
+                })
+                router.push("/workspace/new");
+            }
         } catch (error: any) {
             console.log("REGISTER ERROR", error);
 

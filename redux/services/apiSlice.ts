@@ -35,13 +35,20 @@ const baseQueryWithReauth: BaseQueryFn<
                     api, extraOptions
                 );
                 if (releaseResult.data) {
-                    api.dispatch(setAuth());
+                   /*  api.dispatch(setAuth()); */
                     result = await baseQuery(args, api, extraOptions);
                 } else {
                     api.dispatch(logout());
+
+                    if (typeof window !== 'undefined') {
+                        window.location.href = '/login';
+                    }
                 }
             } catch (error) {
                 console.log("BaseQueryWithReauth error: ", error);
+                if (typeof window !== 'undefined') {
+                    window.location.href = '/login';
+                }
             } finally {
                 release();
             }
@@ -57,4 +64,4 @@ export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery: baseQueryWithReauth,
     endpoints: builder => ({})
-})
+});

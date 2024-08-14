@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 
 import { cn } from "@/lib/utils";
 import { RiUnderline } from "react-icons/ri";
+import { Navbar } from "@/components/nav/navbar";
 
 const headingFont = localFont({
   src: "../public/fonts/font.woff2"
@@ -10,6 +11,7 @@ const headingFont = localFont({
 export default function MarketingPage() {
   return (
     <div className="h-full flex items-center justify-center flex-col">
+      <Navbar />
       <div className={cn(
         "flex items-center justify-center flex-col",
         headingFont.className,

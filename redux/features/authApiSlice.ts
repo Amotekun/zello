@@ -35,6 +35,19 @@ const authApiSlice = apiSlice.injectEndpoints({
                 body: { email, password },
             }),
         }),
+        logout: builder.mutation({
+            query: () => ({
+                url: '/logout/',
+                method: 'POST',
+            }),
+        }),
+        workspace: builder.mutation({
+            query: ({title, slug}) => ({
+                url: '/workspace/',
+                method: 'POST',
+                body: { title, slug },
+            })
+        })
     }),
 });
 
@@ -42,4 +55,6 @@ export const {
     useRegisterMutation,
     useActivationMutation,
     useLoginMutation,
+    useLogoutMutation,
+    useWorkspaceMutation,
 } = authApiSlice

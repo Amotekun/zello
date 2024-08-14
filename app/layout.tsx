@@ -4,8 +4,8 @@ import "./globals.css";
 import Provider from "@/redux/provider";
 import { Toaster } from "@/components/ui/toaster";
 import { siteConfig } from "@/config/site";
-import { Navbar } from "@/components/nav/navbar";
 import { Footer } from "@/components/footer";
+import { AppInitializer } from "@/components/app-initializer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Provider>
-          <Navbar />
+          <AppInitializer />
           <Toaster />
           {children}
           <Footer />
