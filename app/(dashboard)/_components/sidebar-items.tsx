@@ -55,16 +55,18 @@ export const SidebarItems: React.FC<SidebarItemsProps> = ({
             <AccordionTrigger
                 onClick={() => onOpen(workspaces.id)}
                 className={cn(
-                    "flex items-center justify-between p-1.5 text-neutral-700 rounded-md hover:bg-neutral-500/10 transition text-start no-underline hover:no-underline",
+                    "flex p-1.5 text-neutral-700 rounded-md hover:bg-neutral-500/10 transition text-start no-underline hover:no-underline",
                     !isOpen && "bg-sky-900/10 text-sky-700" 
                 )}
             >
-                <div>
-                    <Pen className="w-4 h-4" />
+                <div className="flex items-center space-x-3">
+                    <div>
+                        <Pen className="w-4 h-4" />
+                    </div>
+                    <span>
+                        {workspaces.title}
+                    </span>
                 </div>
-                <span>
-                    {workspaces.title}
-                </span>
             </AccordionTrigger>
             <AccordionContent className="pt-1 text-neutral-700">
                 {routes.map((routes) => (

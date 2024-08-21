@@ -10,11 +10,6 @@ export const MobileSidebar = () => {
     const isOpen = useAppSelector(state => state.MobileSidebar.isOpen)
 
     const handleOpen = () => dispatch(openSheet());
-  /*   const handleClose = (open: boolean) => {
-        if (!open) {
-            dispatch(closeSheet());
-        };
-    }; */
     const handleClose = () => dispatch(closeSheet());
 
     return (
