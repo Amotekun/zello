@@ -5,15 +5,17 @@ import { useAppSelector } from "@/redux/hooks";
 import { Avatar } from "./avatar";
 import { FormPopover } from "@/components/form/form-popover";
 import { ChevronDown } from "lucide-react";
+import { MobileSidebar } from "./mobile-sidebar";
 
 export const Navbar = () => {
     const {isAuthenticated } = useAppSelector(state => state.auth);
 
     console.log("ISAUTHENTICATED", isAuthenticated);
     return (
-        <div className="fixed top-0 w-full py-3 px-4 border-b shadow-sm bg-white flex items-center">
-            <div className="md:max-w-screen-2xl mx-auto flex items-center w-full justify-between">
-                <div className="flex items-center space-x-5">
+        <nav className="fixed top-0 w-full py-3 px-2 border-b shadow-sm bg-white flex items-center">
+            <MobileSidebar />
+            <div className="md:max-w-screen-2xl md:mx-auto flex items-center w-full justify-between">
+                <div className="flex items-center space-x-3">
                     <Logo/>
                     <FormPopover 
                         name="WorkSpace"
@@ -28,10 +30,10 @@ export const Navbar = () => {
                         variant="primary"
                     />
                 </div>
-                <div className="space-x-4 md:block md:w-auto flex items-center justify-between w-full">
+                <div className="space-x-4 md:block md:w-auto flex items-center">
                     <Avatar />
                 </div>
             </div>
-        </div>
+        </nav>
     )
 }

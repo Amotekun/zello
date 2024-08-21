@@ -1,13 +1,11 @@
 "use client";
 
 import { 
-    Popover, 
-    PopoverClose, 
-    PopoverContent, 
-    PopoverTrigger 
-} from "@/components/ui/popover"
-import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+    Dialog, 
+    DialogContent, 
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 import { 
     Form, 
     FormControl, 
@@ -15,34 +13,24 @@ import {
     FormItem, 
     FormLabel 
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import * as z  from "zod"
 import { WorkspaceSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
 import { toast } from "@/components/ui/use-toast";
-import { useWorkspaceMutation } from "@/redux/features/auth-api-slice";
 import { useRouter } from "next/navigation";
-import { ComponentType, ElementRef, useRef } from "react";
+import * as z  from "zod"
+import { useWorkspaceMutation } from "@/redux/features/auth-api-slice";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { closeModal } from "@/redux/features/store-modal-slice";
 
-
-interface FormPopoverProps {
-    name: string;
-    side?: "left" | "right" | "top" | "bottom";
-    sideOffset?: number;
-    variant?: "default" | "destructive" | "outline" | "primary" | "secondary" | "ghost";
-    Icon?: ComponentType<React.SVGProps<SVGSVGElement>>;
-}
-export const FormPopover: React.FC<FormPopoverProps> = ({
-    name,
-    side = "bottom",
-    sideOffset = 0,
-    variant = "default",
-    Icon
-}) => {
-    const [workspace] = useWorkspaceMutation();
+export const FormModal = () => {
+    const dispatch = useAppDispatch();
+    const isOpen = useAppSelector((state) => state.storeModal.isOpen)
     const router = useRouter();
-    const closeRef = useRef<ElementRef<"button">>(null)
+    const [workspace] = useWorkspaceMutation();
+    console.log("Modal is isOpen", isOpen);
 
     const form = useForm<z.infer<typeof WorkspaceSchema>>({
         resolver: zodResolver(WorkspaceSchema),
@@ -69,8 +57,9 @@ export const FormPopover: React.FC<FormPopoverProps> = ({
                 title: "Workspace created",
                 variant: "default"
             })
+            form.reset();
+            dispatch(closeModal());    
             router.push(`/workspace/${payload.slug}`)
-            closeRef.current?.click();
         } catch (error: any) {
             console.log("WORKSPACE ERROR", error);
             toast({
@@ -78,34 +67,25 @@ export const FormPopover: React.FC<FormPopoverProps> = ({
                 variant: "destructive"
             })
         }
-           
-    }
+    };
     
+    const onClose = (open: boolean) => {
+        console.log("Dialog state detected, open:", open);
+        if (!open) {
+          dispatch(closeModal());
+          console.log("Modal closed in redux");
+        }
+      };
+
     return (
-        <Popover >
-            <PopoverTrigger asChild>
-                <Button 
-                    className="rounded-sm "
-                    variant={variant}
-                    size='sm'
-                > 
-                    {name} 
-                    {Icon && <Icon />}
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent 
-                side={side}
-                sideOffset={sideOffset}
-                className=""
-            >
-                <PopoverClose ref={closeRef} asChild>
-                    <Button
-                        variant="ghost"
-                        className="absolute h-auto w-auto p-2  right-2 top-2 text-neutral-600"
-                    >
-                        <X className="w-4 h-4"/>
-                    </Button>
-                </PopoverClose>
+        <Dialog
+            open={isOpen}
+            onOpenChange={onClose}
+        >
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle> Create Workspace </DialogTitle>
+                </DialogHeader>
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
@@ -134,7 +114,7 @@ export const FormPopover: React.FC<FormPopoverProps> = ({
                         </Button>
                     </form>
                 </Form>
-            </PopoverContent>
-        </Popover>
+            </DialogContent>            
+        </Dialog>
     )
 }

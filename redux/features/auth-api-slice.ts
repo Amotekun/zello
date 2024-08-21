@@ -1,7 +1,11 @@
 import { apiSlice } from "@/redux/services/apiSlice";
+import { Workspaces } from "@/types";
 
 const authApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
+        retrieveWorkspaces: builder.query<Workspaces[], void>({
+            query: () => '/workspace/list/',
+        }),
         register: builder.mutation({
             query: ({
                 first_name,
@@ -52,6 +56,7 @@ const authApiSlice = apiSlice.injectEndpoints({
 });
 
 export const { 
+    useRetrieveWorkspacesQuery,
     useRegisterMutation,
     useActivationMutation,
     useLoginMutation,

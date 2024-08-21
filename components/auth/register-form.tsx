@@ -14,7 +14,7 @@ import {
     FormLabel 
 } from '@/components/ui/form'
 import { Button } from "../ui/button"
-import { useRegisterMutation } from "@/redux/features/authApiSlice"
+import { useRegisterMutation } from "@/redux/features/auth-api-slice"
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from "next/navigation"
 

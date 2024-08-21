@@ -5,12 +5,13 @@ import {
 
 
 /* const token = localStorage.getItem('userToken') || null; */
-interface AuthState {
+interface AuthStateTypes {
     userToken: string | null;
     isAuthenticated: boolean;
     isLoading: boolean;
-}
-const initialState: AuthState = {
+};
+
+const initialAuthState: AuthStateTypes = {
     userToken: null,
     isAuthenticated: false,
     isLoading: true,
@@ -18,7 +19,7 @@ const initialState: AuthState = {
 
 const authSlice = createSlice({
     name: "auth",
-    initialState,
+    initialState: initialAuthState,
     reducers: {
         setAuth: (state, action: PayloadAction<{userToken: string}>) => {
             state.userToken = action.payload.userToken;

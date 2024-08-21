@@ -1,9 +1,9 @@
 "use client"
 
-import { useLogoutMutation } from "@/redux/features/authApiSlice";
+import { useLogoutMutation } from "@/redux/features/auth-api-slice";
 import { useAppDispatch } from "@/redux/hooks";
 import { LogOut } from "lucide-react";
-import { logout as setLogout } from "@/redux/features/authSlice";
+import { logout as setLogout } from "@/redux/features/auth-slice";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 

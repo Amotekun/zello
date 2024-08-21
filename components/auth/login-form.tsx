@@ -14,11 +14,11 @@ import {
     FormLabel 
 } from '@/components/ui/form'
 import { Button } from "../ui/button"
-import { useLoginMutation } from "@/redux/features/authApiSlice"
+import { useLoginMutation } from "@/redux/features/auth-api-slice"
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from "next/navigation"
 import { useAppDispatch } from "@/redux/hooks"
-import { setAuth } from "@/redux/features/authSlice"
+import { setAuth } from "@/redux/features/auth-slice"
 
 export const LoginForm = () => {
     const { toast } = useToast();
@@ -51,7 +51,8 @@ export const LoginForm = () => {
                     variant: "default",
                 })
                 router.push("/workspace/new");
-            }
+                router.refresh();
+            };
         } catch (error: any) {
             console.log("REGISTER ERROR", error);
 

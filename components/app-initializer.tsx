@@ -3,7 +3,7 @@
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setAuth, finishInitialLoad } from "@/redux/features/authSlice";
+import { setAuth, finishInitialLoad } from "@/redux/features/auth-slice";
 import { RootState } from "@/redux/store";
 import { useAppSelector } from "@/redux/hooks";
 

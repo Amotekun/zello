@@ -1,7 +1,7 @@
 "use client"
 
 import { toast } from "@/components/ui/use-toast";
-import { useActivationMutation } from "@/redux/features/authApiSlice";
+import { useActivationMutation } from "@/redux/features/auth-api-slice";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 

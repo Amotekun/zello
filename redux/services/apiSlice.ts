@@ -6,7 +6,7 @@ import {
     fetchBaseQuery 
 } from "@reduxjs/toolkit/query/react";
 import { Mutex } from "async-mutex";
-import { logout, setAuth } from "@/redux/features/authSlice"
+import { logout, setAuth } from "@/redux/features/auth-slice"
 
 const mutex = new Mutex();
 
