@@ -35,3 +35,9 @@ export const WorkspaceSchema = z.object({
         message: "title is required",
     })
 })
+
+export const BoardSchema = z.object({
+    title: z.string().min(1, {
+        message: "title is required",
+    })
+})

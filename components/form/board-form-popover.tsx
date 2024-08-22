@@ -17,35 +17,31 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import * as z  from "zod"
-import { WorkspaceSchema } from "@/schema";
+import { BoardSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { useWorkspaceMutation } from "@/redux/features/auth-api-slice";
 import { useRouter } from "next/navigation";
-import { ComponentType, ElementRef, useRef } from "react";
+import { ElementRef, useRef } from "react";
 
 
-interface FormPopoverProps {
-    name: string;
+interface BoardFormPopoverProps {
     side?: "left" | "right" | "top" | "bottom";
     sideOffset?: number;
-    variant?: "default" | "destructive" | "outline" | "primary" | "secondary" | "ghost";
-    Icon?: ComponentType<React.SVGProps<SVGSVGElement>>;
+    children: React.ReactNode;
 }
-export const FormPopover: React.FC<FormPopoverProps> = ({
-    name,
-    side = "bottom",
-    sideOffset = 0,
-    variant = "default",
-    Icon
+export const BoardFormPopover: React.FC<BoardFormPopoverProps> = ({
+    side = "right",
+    sideOffset = 40,
+    children
 }) => {
     const [workspace] = useWorkspaceMutation();
     const router = useRouter();
     const closeRef = useRef<ElementRef<"button">>(null)
 
-    const form = useForm<z.infer<typeof WorkspaceSchema>>({
-        resolver: zodResolver(WorkspaceSchema),
+    const form = useForm<z.infer<typeof BoardSchema>>({
+        resolver: zodResolver(BoardSchema),
         defaultValues: {
             title: "",
         }
@@ -60,7 +56,7 @@ export const FormPopover: React.FC<FormPopoverProps> = ({
             .replace(/-+$/, '')
     }
 
-    const onSubmit = async (values: z.infer<typeof WorkspaceSchema>) => {
+    const onSubmit = async (values: z.infer<typeof BoardSchema>) => {
         try {
             const slug = generateSlug(values.title);
             const payload = await workspace({title: values.title, slug}).unwrap();
@@ -84,14 +80,7 @@ export const FormPopover: React.FC<FormPopoverProps> = ({
     return (
         <Popover >
             <PopoverTrigger asChild>
-                <Button 
-                    className="rounded-sm "
-                    variant={variant}
-                    size='sm'
-                > 
-                    {name} 
-                    {Icon && <Icon />}
-                </Button>
+                {children}
             </PopoverTrigger>
             <PopoverContent 
                 side={side}
@@ -115,7 +104,7 @@ export const FormPopover: React.FC<FormPopoverProps> = ({
                             name="title"
                             render={({field}) => (
                                 <FormItem>
-                                    <FormLabel>Title</FormLabel>
+                                    <FormLabel>Board Title</FormLabel>
                                     <FormControl>
                                         <Input 
                                             {...field}
@@ -130,7 +119,7 @@ export const FormPopover: React.FC<FormPopoverProps> = ({
                             type = "submit"
                             className="w-full mt-4"  
                         >
-                            Create Workspace
+                            Create Board
                         </Button>
                     </form>
                 </Form>

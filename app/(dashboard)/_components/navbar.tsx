@@ -3,7 +3,7 @@
 import { Logo } from "@/components/logo";
 import { useAppSelector } from "@/redux/hooks";
 import { Avatar } from "./avatar";
-import { FormPopover } from "@/components/form/form-popover";
+import { WorkspaceFormPopover } from "@/components/form/workspace-form-popover";
 import { ChevronDown } from "lucide-react";
 import { MobileSidebar } from "./mobile-sidebar";
 
@@ -17,7 +17,7 @@ export const Navbar = () => {
             <div className="md:max-w-screen-2xl md:mx-auto flex items-center w-full justify-between">
                 <div className="flex items-center space-x-3">
                     <Logo/>
-                    <FormPopover 
+                    <WorkspaceFormPopover 
                         name="WorkSpace"
                         variant="ghost"
                         side="bottom"
@@ -25,7 +25,7 @@ export const Navbar = () => {
                         Icon={ChevronDown}
                         
                     />
-                    <FormPopover 
+                    <WorkspaceFormPopover
                         name="Create"
                         variant="primary"
                     />
