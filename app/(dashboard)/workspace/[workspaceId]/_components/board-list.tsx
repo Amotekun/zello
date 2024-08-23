@@ -1,8 +1,14 @@
-import { BoardFormPopover } from "@/components/form/board-form-popover";
+import { BoardFormPopover } from "@/components/form/form-board-popover";
 import { Hint } from "@/components/hint";
 import { HelpCircle, User2 } from "lucide-react"
 
-export const BoardList = () => {
+interface BoardListParams {
+    params: {workspaceId: string}
+};
+
+export const BoardList: React.FC<BoardListParams> = ({
+    params
+}) => {
     return (
         <div>
             <div className="flex items-center font-semibold text-lg text-neutral-700">
@@ -11,15 +17,18 @@ export const BoardList = () => {
             </div>
             <div>
                 {}
-                <BoardFormPopover>
+                <BoardFormPopover
+                    params={params}
+                >
                     <div
                         role="button"
-                        className="relative h-full aspect-video bg-muted rounded-sm flex flex-col gap-y-1 hover:opacity-75 transition"
+                        className="relative h-full aspect-video bg-muted rounded-sm flex flex-col gap-y-1 hover:opacity-75 p-2 transition"
                     >
                         <p className="text-sm">
                             Create new board
                         </p>
-                        <span>
+                        <span className="text-sm">
+                            5 free boards
                             {/* TODO: ADD SUBSCRIPTION LATER */}
                         </span>
                         <Hint

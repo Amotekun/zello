@@ -11,7 +11,7 @@ export const Info: React.FC<InfoProps> = ({
     params
 }) => {
     console.log("WORKSPACEID PARAMETER:", params.workspaceId)
-    const { workspaces, isLoading } = getWorkSpaces();
+    const { workspaces } = getWorkSpaces();
 
     const workspace =  workspaces.find(w => w.slug === params.workspaceId);
 

@@ -16,7 +16,9 @@ export default function WorkspacePage({
             />
             <Separator className="my-4"/>
             <div>
-                <BoardList />
+                <BoardList 
+                    params={params}
+                />
             </div>
         </div>
     )

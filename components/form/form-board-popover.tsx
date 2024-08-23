@@ -21,22 +21,31 @@ import { BoardSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import { useWorkspaceMutation } from "@/redux/features/auth-api-slice";
+import { useBoardsMutation } from "@/redux/features/auth-api-slice";
 import { useRouter } from "next/navigation";
 import { ElementRef, useRef } from "react";
+import { FormPicker } from "./form-picker";
 
 
 interface BoardFormPopoverProps {
+    params?: {workspaceId: string}
     side?: "left" | "right" | "top" | "bottom";
     sideOffset?: number;
+    align?: "start" | "center" | "end";
     children: React.ReactNode;
 }
 export const BoardFormPopover: React.FC<BoardFormPopoverProps> = ({
     side = "right",
     sideOffset = 40,
-    children
+    children,
+    params,
+    align = "start",
 }) => {
-    const [workspace] = useWorkspaceMutation();
+
+    const {workspaceId} = params || {};
+
+    console.log("BOARD FORM POPPER", workspaceId);
+    const [board] = useBoardsMutation();
     const router = useRouter();
     const closeRef = useRef<ElementRef<"button">>(null)
 
@@ -44,6 +53,7 @@ export const BoardFormPopover: React.FC<BoardFormPopoverProps> = ({
         resolver: zodResolver(BoardSchema),
         defaultValues: {
             title: "",
+            image: ""
         }
     });
 
@@ -58,17 +68,38 @@ export const BoardFormPopover: React.FC<BoardFormPopoverProps> = ({
 
     const onSubmit = async (values: z.infer<typeof BoardSchema>) => {
         try {
-            const slug = generateSlug(values.title);
-            const payload = await workspace({title: values.title, slug}).unwrap();
-            console.log("WORKSPACE PAYLOAD", payload);
+            const {title, image} = values
+
+            const [
+                image_id,
+                image_thumb_url,
+                image_full_url,
+                image_user_name,
+                image_link_html
+            ] = image.split("|").map(item => item.trim())
+
+            const slug = generateSlug(title)
+
+            const payload = await board({
+                title,
+                slug,
+                image_id,
+                image_thumb_url,
+                image_full_url,
+                image_user_name,
+                image_link_html,
+                workspace_slug: workspaceId,
+            }).unwrap();
+
             toast({
-                title: "Workspace created",
+                title: "Board created",
                 variant: "default"
             })
-            router.push(`/workspace/${payload.slug}`)
+            router.push(`/boards/${payload.slug}`);
+            router.refresh();
             closeRef.current?.click();
         } catch (error: any) {
-            console.log("WORKSPACE ERROR", error);
+            console.log("BOARD ERROR", error);
             toast({
                 title: "An error occured",
                 variant: "destructive"
@@ -85,8 +116,12 @@ export const BoardFormPopover: React.FC<BoardFormPopoverProps> = ({
             <PopoverContent 
                 side={side}
                 sideOffset={sideOffset}
+                align={align}
                 className=""
             >
+                <div className="text-sm font-medium text-neutral-600 pb-4">
+                    Create board
+                </div>
                 <PopoverClose ref={closeRef} asChild>
                     <Button
                         variant="ghost"
@@ -99,6 +134,11 @@ export const BoardFormPopover: React.FC<BoardFormPopoverProps> = ({
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
+                        <FormPicker 
+                            id="image"
+                            name="image"
+                            control={form.control}
+                        />
                         <FormField 
                             control={form.control}
                             name="title"
@@ -125,5 +165,5 @@ export const BoardFormPopover: React.FC<BoardFormPopoverProps> = ({
                 </Form>
             </PopoverContent>
         </Popover>
-    )
-}
+    );
+};

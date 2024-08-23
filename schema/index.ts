@@ -39,5 +39,6 @@ export const WorkspaceSchema = z.object({
 export const BoardSchema = z.object({
     title: z.string().min(1, {
         message: "title is required",
-    })
+    }),
+    image: z.string()
 })

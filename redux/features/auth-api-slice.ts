@@ -51,6 +51,31 @@ const authApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: { title, slug },
             })
+        }),
+        boards: builder.mutation({
+            query: ({
+                title,
+                slug,
+                image_id,
+                image_thumb_url,
+                image_full_url,
+                image_user_name, 
+                image_link_html,
+                workspace_slug,
+            }) => ({
+                url: '/boards/',
+                method: 'POST',
+                body: {
+                    title,
+                    slug,
+                    image_id,
+                    image_thumb_url,
+                    image_full_url,
+                    image_user_name,
+                    image_link_html,
+                    workspace_slug
+                },
+            })
         })
     }),
 });
@@ -62,4 +87,5 @@ export const {
     useLoginMutation,
     useLogoutMutation,
     useWorkspaceMutation,
+    useBoardsMutation
 } = authApiSlice
