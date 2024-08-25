@@ -28,7 +28,7 @@ import { FormPicker } from "./form-picker";
 
 
 interface BoardFormPopoverProps {
-    params?: {workspaceId: string}
+    params?: {workspaceSlug: string}
     side?: "left" | "right" | "top" | "bottom";
     sideOffset?: number;
     align?: "start" | "center" | "end";
@@ -42,9 +42,9 @@ export const BoardFormPopover: React.FC<BoardFormPopoverProps> = ({
     align = "start",
 }) => {
 
-    const {workspaceId} = params || {};
+    const {workspaceSlug} = params || {};
 
-    console.log("BOARD FORM POPPER", workspaceId);
+    console.log("BOARD FORM POPPER", workspaceSlug);
     const [board] = useBoardsMutation();
     const router = useRouter();
     const closeRef = useRef<ElementRef<"button">>(null)
@@ -88,14 +88,14 @@ export const BoardFormPopover: React.FC<BoardFormPopoverProps> = ({
                 image_full_url,
                 image_user_name,
                 image_link_html,
-                workspace_slug: workspaceId,
+                workspace_slug: workspaceSlug,
             }).unwrap();
 
             toast({
                 title: "Board created",
                 variant: "default"
             })
-            router.push(`/boards/${payload.slug}`);
+         /*    router.push(`/boards/${payload.slug}`); */
             router.refresh();
             closeRef.current?.click();
         } catch (error: any) {

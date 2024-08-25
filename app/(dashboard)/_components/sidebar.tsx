@@ -7,7 +7,7 @@ import { useLocalStorage } from "usehooks-ts"
 import { useAppDispatch } from "@/redux/hooks";
 import { Plus } from "lucide-react";
 import { SidebarItems } from "./sidebar-items";
-import { getWorkSpaces } from "@/actions/useWorkspaces";
+import { getWorkSpaces } from "@/actions/use-workspaces";
 import { Workspaces } from "@/types";
 
 interface SidebarProps {
@@ -18,6 +18,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
     storageKey = "sidebar-storage"
 }) => {
     const {workspaces} = getWorkSpaces();
+
+    if (!workspaces) {
+        return (
+            <div>
+                No workspaces created yet...
+            </div>
+        )
+    }
 
     console.log("Reteived workspace data:", workspaces)
     const dispatch = useAppDispatch();

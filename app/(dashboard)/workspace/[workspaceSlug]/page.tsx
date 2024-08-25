@@ -3,7 +3,7 @@ import { Info } from "./_components/info";
 import { BoardList } from "./_components/board-list";
 
 interface WorkspacePageProps {
-    params: {workspaceId: string}
+    params: {workspaceSlug: string}
 };
 
 export default function WorkspacePage({

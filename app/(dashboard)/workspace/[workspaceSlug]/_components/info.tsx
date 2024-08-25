@@ -1,19 +1,19 @@
 "use client";
 
-import { getWorkSpaces } from "@/actions/useWorkspaces"
+import { getWorkSpaces } from "@/actions/use-workspaces"
 import { CreditCard, Layout } from "lucide-react"
 
 interface InfoProps {
-    params: {workspaceId: string};
+    params: {workspaceSlug: string};
 };
 
 export const Info: React.FC<InfoProps> = ({
     params
 }) => {
-    console.log("WORKSPACEID PARAMETER:", params.workspaceId)
+    console.log("WORKSPACE SLUG PARAMETER:", params.workspaceSlug)
     const { workspaces } = getWorkSpaces();
 
-    const workspace =  workspaces.find(w => w.slug === params.workspaceId);
+    const workspace =  workspaces.find(w => w.slug === params.workspaceSlug);
 
     
     return (

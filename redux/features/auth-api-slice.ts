@@ -1,10 +1,13 @@
 import { apiSlice } from "@/redux/services/apiSlice";
-import { Workspaces } from "@/types";
+import { Boards, Workspaces } from "@/types";
 
 const authApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         retrieveWorkspaces: builder.query<Workspaces[], void>({
             query: () => '/workspace/list/',
+        }),
+        retrieveBoards: builder.query<Boards[], string | undefined>({
+            query: (workspaceSlug) => `/boards/list?workspaceSlug=${workspaceSlug}`,
         }),
         register: builder.mutation({
             query: ({
@@ -82,6 +85,7 @@ const authApiSlice = apiSlice.injectEndpoints({
 
 export const { 
     useRetrieveWorkspacesQuery,
+    useRetrieveBoardsQuery,
     useRegisterMutation,
     useActivationMutation,
     useLoginMutation,

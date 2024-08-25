@@ -1,22 +1,50 @@
+"use client";
+
 import { BoardFormPopover } from "@/components/form/form-board-popover";
 import { Hint } from "@/components/hint";
+import { useRetrieveBoardsQuery } from "@/redux/features/auth-api-slice";
 import { HelpCircle, User2 } from "lucide-react"
+import Link from "next/link";
 
 interface BoardListParams {
-    params: {workspaceId: string}
+    params: {workspaceSlug: string}
 };
 
 export const BoardList: React.FC<BoardListParams> = ({
     params
 }) => {
+    const {workspaceSlug} = params;
+
+    console.log("WORKSPACE SLUG :", workspaceSlug);
+
+    const {data: boards, error, isLoading} = useRetrieveBoardsQuery(workspaceSlug);
+
+    console.log("boardList", boards);
+
+    if (!boards) return;
+
     return (
-        <div>
+        <div className="space-y-4">
             <div className="flex items-center font-semibold text-lg text-neutral-700">
                 <User2 className=""/>
                 Your boards
             </div>
-            <div>
-                {}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                {boards.map((board) => (
+                    <Link
+                        key={board.id}
+                        href={`/board/${board.slug}`}
+                        className="relative aspect-video bg-no-repeat bg-center bg-cover bg-sky-700 rounded-sm h-full w-full p-2 overflow-hidden"
+                        style={{backgroundImage: `url(${board.image_thumb_url})`}}
+                    >
+                        <div className="absolute bg-black/30 inset-0 group-hover:bg-black/40 transition">
+                            <p className="relative font-semibold text-white">
+                                {board.title}
+                            </p>
+                        </div>
+                    </Link>
+                ))}
+
                 <BoardFormPopover
                     params={params}
                 >
