@@ -19,9 +19,9 @@ export const BoardList: React.FC<BoardListParams> = ({
 
     const {data: boards, error, isLoading} = useRetrieveBoardsQuery(workspaceSlug);
 
+    console.log("error", error);
+    console.log("isLoading", isLoading);
     console.log("boardList", boards);
-
-    if (!boards) return;
 
     return (
         <div className="space-y-4">
@@ -30,10 +30,10 @@ export const BoardList: React.FC<BoardListParams> = ({
                 Your boards
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                {boards.map((board) => (
+                {!!boards && boards.map((board) => (
                     <Link
                         key={board.id}
-                        href={`/board/${board.slug}`}
+                        href={`/workspace/${workspaceSlug}/${board.slug}`}
                         className="relative aspect-video bg-no-repeat bg-center bg-cover bg-sky-700 rounded-sm h-full w-full p-2 overflow-hidden"
                         style={{backgroundImage: `url(${board.image_thumb_url})`}}
                     >

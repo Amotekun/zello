@@ -7,7 +7,13 @@ const authApiSlice = apiSlice.injectEndpoints({
             query: () => '/workspace/list/',
         }),
         retrieveBoards: builder.query<Boards[], string | undefined>({
-            query: (workspaceSlug) => `/boards/list?workspaceSlug=${workspaceSlug}`,
+            query: (workspaceSlug) => `/boards/${workspaceSlug}/`,
+        }),
+        retrieveWorkspaceBoards: builder.query<Boards, {workspaceSlug: string; boardSlug: string}>({
+            query: ({
+                workspaceSlug, 
+                boardSlug
+            }) => `/workspace/${workspaceSlug}/${boardSlug}/`
         }),
         register: builder.mutation({
             query: ({
@@ -86,6 +92,7 @@ const authApiSlice = apiSlice.injectEndpoints({
 export const { 
     useRetrieveWorkspacesQuery,
     useRetrieveBoardsQuery,
+    useRetrieveWorkspaceBoardsQuery,
     useRegisterMutation,
     useActivationMutation,
     useLoginMutation,
