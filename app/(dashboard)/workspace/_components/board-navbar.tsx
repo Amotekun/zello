@@ -1,23 +1,15 @@
 "use client"
 
-import { useRetrieveWorkspaceBoardsQuery } from "@/redux/features/auth-api-slice";
+import { BoardTitleForm } from "./board-title-form";
 
 interface BoardNavbarProps {
     params: {workspaceSlug: string, boardSlug: string};
 };
 
 export const BoardNavbar: React.FC<BoardNavbarProps>= ({ params }) => {
-    const {workspaceSlug, boardSlug} = params;
-
-    const {data: board, error, isLoading} = useRetrieveWorkspaceBoardsQuery({
-        workspaceSlug: workspaceSlug,
-        boardSlug: boardSlug,
-    })
-
-    if (!board) return;
-
     return (
-        <div className="fixed">
+        <div className="fixed w-full h-14 flex z-[40]">
+            <BoardTitleForm params={params} />
             <div>
                 
             </div>

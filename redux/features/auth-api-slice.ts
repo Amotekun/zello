@@ -85,7 +85,22 @@ const authApiSlice = apiSlice.injectEndpoints({
                     workspace_slug
                 },
             })
-        })
+        }),
+        boardUpdate: builder.mutation({
+            query: ({
+                workspaceSlug,
+                boardSlug,
+                title,
+                slug
+            }) => ({
+                url: `/workspace/${workspaceSlug}/${boardSlug}/`,
+                method: "PATCH",
+                body: {
+                    title,
+                    slug
+                },
+            })
+        }),
     }),
 });
 
@@ -98,5 +113,6 @@ export const {
     useLoginMutation,
     useLogoutMutation,
     useWorkspaceMutation,
-    useBoardsMutation
+    useBoardsMutation,
+    useBoardUpdateMutation,
 } = authApiSlice
