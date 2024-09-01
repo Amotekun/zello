@@ -14,7 +14,7 @@ export const Navbar = () => {
 
     console.log("ISAUTHENTICATED", isAuthenticated);
     return (
-        <nav className="fixed top-0 w-full py-3.5 px-2 border-b shadow-sm bg-white flex items-center">
+        <nav className="fixed top-0 w-full py-3.5 px-2 z-[50] border-b shadow-sm bg-white flex items-center">
             <MobileSidebar />
             <div className="md:px-7 md:mx-auto flex items-center w-full justify-between">
                 <div className="flex items-center space-x-3">

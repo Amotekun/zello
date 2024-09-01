@@ -10,7 +10,7 @@ export default function WorkspacePage({
     params
 }: WorkspacePageProps) {
     return (
-        <div className="">
+        <div className="p-9">
             <Info 
                 params={params}
             />

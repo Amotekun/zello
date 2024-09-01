@@ -17,7 +17,7 @@ export const MobileSidebar = () => {
             <Button
                 onClick={handleOpen}
                 variant="ghost"
-                className="block md:hidden"
+                className="block"
             >
                 <Menu className="h-4 w-4"/>
             </Button>

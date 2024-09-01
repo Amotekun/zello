@@ -58,7 +58,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
     return (
         <>
-            <div className="flex items-center text-xs mb-4 max-md:mt-5 font-medium">
+            <div className="flex mt-9 items-center text-xs mb-4 max-md:mt-5 font-medium">
                 <span className="pl-4">
                     Workspaces
                 </span>

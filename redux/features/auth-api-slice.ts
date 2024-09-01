@@ -101,7 +101,34 @@ const authApiSlice = apiSlice.injectEndpoints({
                 },
             })
         }),
-    }),
+        boardDelete: builder.mutation({
+            query: ({
+                workspaceSlug,
+                boardSlug
+            }) => ({
+                url: `/workspace/${workspaceSlug}/${boardSlug}/`,
+                method: "DELETE",
+            })
+        }),
+        list: builder.mutation({
+            query: ({
+                workspace_slug,
+                board_slug,
+                title,
+                slug
+            }) => ({
+                url: `/list/`,
+                method: 'POST',
+                body: {
+                    workspace_slug,
+                    board_slug,
+                    title,
+                    slug,
+
+                },
+            })
+        })
+    })
 });
 
 export const { 
@@ -115,4 +142,6 @@ export const {
     useWorkspaceMutation,
     useBoardsMutation,
     useBoardUpdateMutation,
+    useBoardDeleteMutation,
+    useListMutation,
 } = authApiSlice

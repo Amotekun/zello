@@ -108,8 +108,6 @@ export const BoardTitleForm: React.FC<BoardTitleFormProps> = ({ params }) => {
         )
     }
 
-
-
     if (!board) return;
 
     return (

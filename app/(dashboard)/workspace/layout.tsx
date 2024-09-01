@@ -6,13 +6,15 @@ export default function WorkspaceLayout({
     children: React.ReactNode;
 }) {
     return (
-        <main className="pt-16 w-full">
-            <div className="flex gap-x-0 ">
-                <div className="w-64 p-3 shrink-0 bg-slate-50 hidden md:block">
+        <main className="relative pt-16 w-full">
+            <div className="flex flex-row w-full gap-x-0">
+              {/*   <div className="w-64 hidden p-3 shrink-0 bg-slate-50 md:block">
                     <Sidebar />
-                </div>
+                </div> */}
                 {children}
             </div>
         </main>
-    )
-}
+    );
+};
+
+{/* flex-1 relativce */}
