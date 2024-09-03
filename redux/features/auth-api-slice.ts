@@ -1,5 +1,5 @@
 import { apiSlice } from "@/redux/services/apiSlice";
-import { Boards, Workspaces } from "@/types";
+import { Boards, List, Workspaces } from "@/types";
 
 const authApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
@@ -14,6 +14,12 @@ const authApiSlice = apiSlice.injectEndpoints({
                 workspaceSlug, 
                 boardSlug
             }) => `/workspace/${workspaceSlug}/${boardSlug}/`
+        }),
+        retrieveList: builder.query<List[], {workspaceSlug: string | string[]; boardSlug: string | string[]}>({
+            query: ({
+                workspaceSlug, 
+                boardSlug
+            }) => `/list/${workspaceSlug}/${boardSlug}/`,
         }),
         register: builder.mutation({
             query: ({
@@ -127,7 +133,24 @@ const authApiSlice = apiSlice.injectEndpoints({
 
                 },
             })
-        })
+        }),
+        listUpdate: builder.mutation({
+            query: ({
+                workspaceSlug,
+                boardSlug,
+                title,
+                slug,
+                id
+            }) => ({
+                url: `/list/${workspaceSlug}/${boardSlug}/`,
+                method: "PATCH",
+                body: {
+                    title,
+                    slug,
+                    id
+                },
+            })
+        }),
     })
 });
 
@@ -135,6 +158,7 @@ export const {
     useRetrieveWorkspacesQuery,
     useRetrieveBoardsQuery,
     useRetrieveWorkspaceBoardsQuery,
+    useRetrieveListQuery,
     useRegisterMutation,
     useActivationMutation,
     useLoginMutation,
@@ -144,4 +168,5 @@ export const {
     useBoardUpdateMutation,
     useBoardDeleteMutation,
     useListMutation,
+    useListUpdateMutation,
 } = authApiSlice
