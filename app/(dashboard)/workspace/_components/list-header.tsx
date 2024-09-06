@@ -1,17 +1,20 @@
 import { FormInput } from "@/components/form/form-input"
 import { toast } from "@/components/ui/use-toast";
 import { useListUpdateMutation } from "@/redux/features/auth-api-slice";
-import { List } from "@/types";
+import { List, ListWithCards } from "@/types";
 import { useParams, useRouter } from "next/navigation";
 import { ElementRef, useRef, useState } from "react";
+import { ListOptions } from "./list-options";
+import { ListWrapper } from "./list-wrapper";
 
 interface ListHeaderProps {
-    list: List;
+    list: ListWithCards;
     onAddCard: () => void;
 };
 
 export const ListHeader: React.FC<ListHeaderProps> = ({
-    list
+    list,
+    onAddCard
 }) => {
     const {workspaceSlug, boardSlug} = useParams();
 
@@ -26,7 +29,7 @@ export const ListHeader: React.FC<ListHeaderProps> = ({
     const [listUpdate] = useListUpdateMutation();
 
     const onBlur = () => {
-
+        formRef.current?.requestSubmit();
     }
 
     const enableEditing = () => {
@@ -77,14 +80,15 @@ export const ListHeader: React.FC<ListHeaderProps> = ({
             disableEditing();
         }
     }
+
     
     return (
-        <div className="pt-2 px-2 z-10 font-semibold text-sm">
+        <div  className="pt-2 px-2 flex items-start z-10  whitespace-nowrap font-semibold text-sm">
             {isEditing ? (
                 <form 
-                    ref={formRef}
-                    action={onSubmit}
-                    className=""
+                ref={formRef}
+                action={onSubmit}
+                className=""
                 >
                     <FormInput 
                         ref={inputRef}
@@ -94,16 +98,20 @@ export const ListHeader: React.FC<ListHeaderProps> = ({
                         placeholder="Enter list title.."
                         defaultValue={title}
                         className="text-sm px-[7px] py-1 h-7 font-medium border-transparent hover:border-input focus:border-input transition truncate bg-transparent focus:bg-white"
-                    />
+                        />
                 </form>
             ): (
                 <div
-                    onClick={enableEditing}
-                    className="w-full text-sm px-2.5 py-1 h-7 font-medium border-transparent"
+                onClick={enableEditing}
+                className="w-full text-sm px-2.5 py-1 h-7 max-w-[300px] whitespace-pre-wrap break-words leading-tight  font-medium border-transparent"
                 >
                     {title}
                 </div>
-            )}    
+            )}  
+            <ListOptions 
+                list={list}
+                onAddCard={onAddCard}
+            />  
         </div>
     )
 }

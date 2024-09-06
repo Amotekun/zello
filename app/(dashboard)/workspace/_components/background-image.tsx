@@ -30,7 +30,7 @@ export const BackgroundImage: React.FC<BackgroundImageProps> = ({
     
     return (
         <div
-            className={`${className} fixed min-h-screen w-full bg-no-repeat bg-center bg-cover`} /* inset-0 */
+            className={`${className} relative min-h-screen w-full bg-no-repeat bg-center bg-cover`} /* inset-0 */
             style={{
                 backgroundImage: `url(${board.image_full_url})`,
                

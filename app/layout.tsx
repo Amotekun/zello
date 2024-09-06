@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { siteConfig } from "@/config/site";
 import { Footer } from "@/components/footer";
 import { AppInitializer } from "@/components/app-initializer";
+import { ModalProvider } from "@/components/providers/modal-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Provider>
           <AppInitializer />
+          <ModalProvider />
           <Toaster />
           {children}
           <Footer />

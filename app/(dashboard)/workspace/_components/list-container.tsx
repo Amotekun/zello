@@ -8,13 +8,14 @@ import { useRetrieveListQuery } from "@/redux/features/auth-api-slice";
 import { useEffect, useState } from "react";
 
 export const ListContainer = () => {
-    const params = useParams()
-    const {workspaceSlug, boardSlug} = params
+    const {workspaceSlug, boardSlug} = useParams()
 
     const {data: list, error} = useRetrieveListQuery({
         workspaceSlug, 
         boardSlug
     });
+
+    console.log("LIST DATA WITH CARDS CONTAINER:", list)
 
     const [listData, setListData] = useState(list);
 
@@ -29,20 +30,19 @@ export const ListContainer = () => {
     console.log("LIST BOARD DATA:", listData)
 
     return (
-        <ol
-            className="flex gap-x-3 h-full"
-        >
-            {listData && listData.map((list, index) => {
-                return (
-                    <ListItem 
-                        key={list.id}
-                        index={index}
-                        list={list}
-
-                    />
-                )
-            })}
-            <ListForm />
-        </ol>
+        <div className="w-full h-full overflow-x-auto">        
+            <ol className="flex gap-x-12 h-full overflow-x-auto px-4 py-4 scrollbar-hide">
+                {listData && listData.map((list, index) => {
+                    return (
+                        <ListItem 
+                            key={list.id}
+                            index={index}
+                            list={list}
+                        />
+                    )
+                })}
+                <ListForm />
+            </ol>
+        </div>
     )
 }

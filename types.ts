@@ -21,3 +21,23 @@ export interface List {
     order: number;
     board: Boards;
 };
+
+export interface Card {
+    id: string;
+    title: string;
+    slug: string;
+};
+
+export interface ListWithCards {
+    id: string;
+    title: string;
+    order: number;
+    cards: Card[];
+};
+
+export interface CardWithList {
+    id: string;
+    title: string;
+    slug: string;
+    list: List;
+};

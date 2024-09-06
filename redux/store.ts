@@ -3,13 +3,17 @@ import { apiSlice } from "./services/apiSlice";
 import authReducer from './features/auth-slice';
 import storeModalReducer from './features/store-modal-slice';
 import MobileSidebarReducer from './features/mobile-sidebar';  
+import cardModalReducer from './features/card-modal-slice';
 
 export const store = configureStore({
     reducer: {
         [apiSlice.reducerPath]: apiSlice.reducer,
         auth: authReducer, 
         storeModal: storeModalReducer,
-        MobileSidebar: MobileSidebarReducer
+        MobileSidebar: MobileSidebarReducer,
+        cardModal: cardModalReducer,
+
+
     },
     middleware: getDefaultMiddleware=> 
         getDefaultMiddleware().concat(apiSlice.middleware),

@@ -1,5 +1,10 @@
 import { apiSlice } from "@/redux/services/apiSlice";
-import { Boards, List, Workspaces } from "@/types";
+import { 
+    Boards, 
+    CardWithList, 
+    ListWithCards, 
+    Workspaces 
+} from "@/types";
 
 const authApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
@@ -9,17 +14,36 @@ const authApiSlice = apiSlice.injectEndpoints({
         retrieveBoards: builder.query<Boards[], string | undefined>({
             query: (workspaceSlug) => `/boards/${workspaceSlug}/`,
         }),
-        retrieveWorkspaceBoards: builder.query<Boards, {workspaceSlug: string; boardSlug: string}>({
+        retrieveWorkspaceBoards: builder.query<Boards, {
+            workspaceSlug: string; 
+            boardSlug: string
+        }>({
             query: ({
                 workspaceSlug, 
                 boardSlug
             }) => `/workspace/${workspaceSlug}/${boardSlug}/`
         }),
-        retrieveList: builder.query<List[], {workspaceSlug: string | string[]; boardSlug: string | string[]}>({
+        retrieveList: builder.query<ListWithCards[], {
+            workspaceSlug: string | string[]; 
+            boardSlug: string | string[];
+        }>({
             query: ({
                 workspaceSlug, 
-                boardSlug
-            }) => `/list/${workspaceSlug}/${boardSlug}/`,
+                boardSlug,
+            }) => `/list/${workspaceSlug}/${boardSlug}/`
+        }),
+        retrieveCard: builder.query<CardWithList, {
+            workspaceSlug: string | string[];
+            boardSlug: string | string[];
+            cardId: string | undefined;
+            listId: string | undefined;
+        }>({
+            query: ({
+                workspaceSlug,
+                boardSlug,
+                cardId,
+                listId
+            }) => `/card/${workspaceSlug}/${boardSlug}/${cardId}/${listId}/`
         }),
         register: builder.mutation({
             query: ({
@@ -151,6 +175,66 @@ const authApiSlice = apiSlice.injectEndpoints({
                 },
             })
         }),
+        listDelete: builder.mutation({
+            query: ({
+                workspaceSlug,
+                boardSlug,
+                id
+            }) => ({
+                url: `/list/${workspaceSlug}/${boardSlug}/`,
+                method: "DELETE",
+                body: {
+                    id
+                },
+            })
+        }),
+        cards: builder.mutation({
+            query: ({
+                workspaceSlug,
+                boardSlug,
+                listId,
+                title,
+                slug
+            }) => ({
+                url: `/card/${workspaceSlug}/${boardSlug}/`,
+                method: 'POST',
+                body: {
+                    title,
+                    slug,
+                    listId
+                },
+            })
+        }),
+        duplicateList: builder.mutation({
+            query: ({
+                workspaceSlug,
+                boardSlug,
+                listId,
+            }) => ({
+                url: `/duplicatelist/${workspaceSlug}/${boardSlug}/`,
+                method: 'POST',
+                body: {
+                    listId,
+                },
+            })
+        }),
+        cardUpdate: builder.mutation({
+            query: ({
+                workspaceSlug,
+                boardSlug,
+                cardId,
+                listId,
+                title,
+                slug,
+            }) => ({
+                url: `/card/${workspaceSlug}/${boardSlug}/${cardId}/${listId}/`,
+                method: 'PATCH',
+                body: {
+                    title,
+                    slug,
+                },
+            })
+        })
     })
 });
 
@@ -159,6 +243,7 @@ export const {
     useRetrieveBoardsQuery,
     useRetrieveWorkspaceBoardsQuery,
     useRetrieveListQuery,
+    useRetrieveCardQuery,
     useRegisterMutation,
     useActivationMutation,
     useLoginMutation,
@@ -169,4 +254,8 @@ export const {
     useBoardDeleteMutation,
     useListMutation,
     useListUpdateMutation,
+    useListDeleteMutation,
+    useCardsMutation,
+    useDuplicateListMutation,
+    useCardUpdateMutation,
 } = authApiSlice
