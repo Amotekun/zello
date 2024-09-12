@@ -1,9 +1,9 @@
 import { apiSlice } from "@/redux/services/apiSlice";
-import { 
-    Boards, 
-    CardWithList, 
-    ListWithCards, 
-    Workspaces 
+import {
+    Boards,
+    CardWithList,
+    ListWithCards,
+    Workspaces
 } from "@/types";
 
 const authApiSlice = apiSlice.injectEndpoints({
@@ -15,20 +15,20 @@ const authApiSlice = apiSlice.injectEndpoints({
             query: (workspaceSlug) => `/boards/${workspaceSlug}/`,
         }),
         retrieveWorkspaceBoards: builder.query<Boards, {
-            workspaceSlug: string; 
+            workspaceSlug: string;
             boardSlug: string
         }>({
             query: ({
-                workspaceSlug, 
+                workspaceSlug,
                 boardSlug
             }) => `/workspace/${workspaceSlug}/${boardSlug}/`
         }),
         retrieveList: builder.query<ListWithCards[], {
-            workspaceSlug: string | string[]; 
+            workspaceSlug: string | string[];
             boardSlug: string | string[];
         }>({
             query: ({
-                workspaceSlug, 
+                workspaceSlug,
                 boardSlug,
             }) => `/list/${workspaceSlug}/${boardSlug}/`
         }),
@@ -65,14 +65,14 @@ const authApiSlice = apiSlice.injectEndpoints({
             }),
         }),
         activation: builder.mutation({
-            query: ({uid, token}) => ({
+            query: ({ uid, token }) => ({
                 url: '/users/activation/',
                 method: 'POST',
                 body: { uid, token },
             }),
         }),
         login: builder.mutation({
-            query: ({email, password}) => ({
+            query: ({ email, password }) => ({
                 url: '/jwt/create/',
                 method: 'POST',
                 body: { email, password },
@@ -85,7 +85,7 @@ const authApiSlice = apiSlice.injectEndpoints({
             }),
         }),
         workspace: builder.mutation({
-            query: ({title, slug}) => ({
+            query: ({ title, slug }) => ({
                 url: '/workspace/',
                 method: 'POST',
                 body: { title, slug },
@@ -98,7 +98,7 @@ const authApiSlice = apiSlice.injectEndpoints({
                 image_id,
                 image_thumb_url,
                 image_full_url,
-                image_user_name, 
+                image_user_name,
                 image_link_html,
                 workspace_slug,
             }) => ({
@@ -226,19 +226,48 @@ const authApiSlice = apiSlice.injectEndpoints({
                 listId,
                 title,
                 slug,
+                description,
+            }) => {
+
+                const body = {
+                    ...(title !== undefined && { title }),
+                    ...(slug !== undefined && { slug }),
+                    ...(description !== undefined && { description })
+                };
+
+                return {
+                    url: `/card/${workspaceSlug}/${boardSlug}/${cardId}/${listId}/`,
+                    method: 'PATCH',
+                    body: body
+                };
+            },
+        }),
+        cardDelete: builder.mutation({
+            query: ({
+                workspaceSlug,
+                boardSlug,
+                cardId,
+                listId
             }) => ({
                 url: `/card/${workspaceSlug}/${boardSlug}/${cardId}/${listId}/`,
-                method: 'PATCH',
-                body: {
-                    title,
-                    slug,
-                },
-            })
-        })
-    })
+                method: 'DELETE',
+            }),
+        }),
+        cardDuplicate: builder.mutation({
+            query: ({
+                workspaceSlug,
+                boardSlug,
+                cardId,
+                listId
+            }) => ({
+                url: `/card_duplicate/${workspaceSlug}/${boardSlug}/${cardId}/${listId}/`,
+                method: 'POST',
+            }),
+        }),
+    }),
 });
 
-export const { 
+export const {
     useRetrieveWorkspacesQuery,
     useRetrieveBoardsQuery,
     useRetrieveWorkspaceBoardsQuery,
@@ -258,4 +287,6 @@ export const {
     useCardsMutation,
     useDuplicateListMutation,
     useCardUpdateMutation,
-} = authApiSlice
+    useCardDeleteMutation,
+    useCardDuplicateMutation
+} = authApiSlice;

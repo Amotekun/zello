@@ -1,10 +1,11 @@
 import { FormInput } from "@/components/form/form-input";
 import { toast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
 import { useCardUpdateMutation } from "@/redux/features/auth-api-slice";
 import { CardWithList } from "@/types"
 import { Layout } from "lucide-react"
 import { useParams } from "next/navigation";
-import { ElementRef, useRef, useState } from "react";
+import { ElementRef, useEffect, useRef, useState } from "react";
 
 interface HeaderProps {
     cardList: CardWithList | undefined;
@@ -12,9 +13,20 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({cardList}) => {
     const {workspaceSlug, boardSlug} = useParams();
-    const [title, setTitle] = useState(cardList?.title);
     const inputRef = useRef<ElementRef<"input">>(null);
+    const  [isEditing, setIsEditing] = useState(false);
     const [cardUpdate] = useCardUpdateMutation();
+
+    const enableEditing = () => {
+        setIsEditing(true);
+        setTimeout(() => {
+            inputRef.current?.focus();
+        });
+    };
+
+    const disableEditing = () => {
+        setIsEditing(false);
+    }
 
     const generateSlug = (title: string): string => {
         if (!title) return "";
@@ -30,6 +42,8 @@ export const Header: React.FC<HeaderProps> = ({cardList}) => {
         const title = formData.get("title") as string;
         const slug = generateSlug(title);
 
+        if (title === cardList?.title) return;
+
         try {
             const payload = await cardUpdate({
                 workspaceSlug,
@@ -44,32 +58,45 @@ export const Header: React.FC<HeaderProps> = ({cardList}) => {
             toast({title: `${payload.title} updated`})
         } catch (error) {
             console.error("HEADER CARD MODAL ERROR",error);
-        } finally {}
-    }
+        } finally {
+            disableEditing();
+        };
+    }; 
 
     const onBlur = () => {
         inputRef.current?.form?.requestSubmit();
-    }
+    };
 
     return (
         <div className="flex items-start gap-x-3 mb-6 w-full">
             <Layout className="h-5 w-5 mt-1 text-neutral-700"/>
             <div className="w-full">
-                <form action={onSubmit}>
-                    <FormInput 
-                        id="title"
-                        name="title"
-                        ref={inputRef}
-                        onBlur={onBlur}
-                        placeholder="Enter a title for this card"
-                        defaultValue={title}
-                        className="font-semibold text-xl px-1 text-neutral-700 bg-transparent border-transparent relative -left-1.5 w-[95%] focus-visible:bg-white focus-visible:border-input mb-0.5 truncate"
-                    />
-                </form>
+                {isEditing ? (
+                    <form action={onSubmit}>
+                        <FormInput 
+                            id="title"
+                            name="title"
+                            ref={inputRef}
+                            onBlur={onBlur}
+                            placeholder="Enter a title for this card"
+                            defaultValue={cardList?.title}
+                            className={cn(
+                                "font-semibold text-xl px-1 text-neutral-700 bg-transparen  border-transparent relative -left-1.5 w-[95%  focus-visible:bg-white focus-visible:border-input mb-0.   truncate",
+                            )}
+                        />
+                    </form>
+                ) : (
+                    <div
+                        onClick={enableEditing}
+                        className="font-semibold text-xl text-neutral-700 truncate"
+                    >
+                        {cardList?.title}
+                    </div>
+                )}
                 <p className="text-sm text-muted-foreground">
                     In list <span className="underline">{cardList?.list.title}</span>
                 </p>
             </div>
         </div>
     )
-}
+};

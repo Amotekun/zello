@@ -11,6 +11,8 @@ import { Description } from "./description";
 import { closeModal } from "@/redux/features/card-modal-slice";
 import { useParams } from "next/navigation";
 import { useRetrieveCardQuery } from "@/redux/features/auth-api-slice";
+import { Action } from "./action";
+import { Activity } from "./activity";
 
 export const CardModal = () => {
     const {workspaceSlug, boardSlug} = useParams();
@@ -40,12 +42,18 @@ export const CardModal = () => {
             onOpenChange={handleCloseModal}
         >
             <DialogContent>
-                <DialogTitle>{}</DialogTitle>
                 <Header cardList={cardList}/>
-                <Description />
-
+                <div className="grid grid-cols-1 md:grid-cols-4 md:gap-4">  
+                    <div className="col-span-3">
+                        <div className="w-full space-y-4">
+                            <Description cardList={cardList}/>
+                            <Activity />
+                        
+                        </div>
+                    </div>   
+                    <Action cardList={cardList}/>  
+                </div>
             </DialogContent>
-
         </Dialog>
     )
 }

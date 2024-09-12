@@ -39,5 +39,6 @@ export interface CardWithList {
     id: string;
     title: string;
     slug: string;
+    description: string;
     list: List;
 };
