@@ -10,7 +10,7 @@ import { Header } from "./header";
 import { Description } from "./description";
 import { closeModal } from "@/redux/features/card-modal-slice";
 import { useParams } from "next/navigation";
-import { useRetrieveCardQuery } from "@/redux/features/auth-api-slice";
+import { useRetrieveActivityLogQuery, useRetrieveCardQuery } from "@/redux/features/auth-api-slice";
 import { Action } from "./action";
 import { Activity } from "./activity";
 
@@ -34,6 +34,14 @@ export const CardModal = () => {
         listId: listId
     }, {skip: !shouldFetch});
 
+    const {data: activityLog} = useRetrieveActivityLogQuery({
+        workspaceSlug,
+        cardId: cardId,
+        listId: listId
+    }, {skip: !shouldFetch});
+
+    console.log("CARD MODAL IS FETCHED", activityLog);
+
     console.log("CARD MODAL LIST WITH CARD AND LIST RELATED TOGETHER", cardList);
 
     return (
@@ -47,7 +55,7 @@ export const CardModal = () => {
                     <div className="col-span-3">
                         <div className="w-full space-y-4">
                             <Description cardList={cardList}/>
-                            <Activity />
+                            <Activity activityLog={activityLog}/>
                         
                         </div>
                     </div>   

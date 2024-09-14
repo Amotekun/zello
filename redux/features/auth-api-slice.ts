@@ -1,5 +1,6 @@
 import { apiSlice } from "@/redux/services/apiSlice";
 import {
+    ActivityLog,
     Boards,
     CardWithList,
     ListWithCards,
@@ -44,6 +45,23 @@ const authApiSlice = apiSlice.injectEndpoints({
                 cardId,
                 listId
             }) => `/card/${workspaceSlug}/${boardSlug}/${cardId}/${listId}/`
+        }),
+        retrieveActivityLog: builder.query<ActivityLog[], {
+            workspaceSlug: string | string[];
+            cardId?: string | undefined;
+            listId?: string | undefined;
+        }>({
+            query: ({
+                workspaceSlug,
+                cardId,
+                listId
+            }) => {
+                if (cardId && listId) {
+                    return `/activity/${workspaceSlug}/${cardId}/${listId}/`
+                } else {
+                    return `/activity/${workspaceSlug}/`
+                }
+            }
         }),
         register: builder.mutation({
             query: ({
@@ -273,6 +291,7 @@ export const {
     useRetrieveWorkspaceBoardsQuery,
     useRetrieveListQuery,
     useRetrieveCardQuery,
+    useRetrieveActivityLogQuery,
     useRegisterMutation,
     useActivationMutation,
     useLoginMutation,

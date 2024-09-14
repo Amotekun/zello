@@ -72,9 +72,9 @@ export const WorkspaceFormPopover: React.FC<WorkspaceFormPopoverProps> = ({
             router.push(`/workspace/${payload.slug}`)
             closeRef.current?.click();
         } catch (error: any) {
-            console.log("WORKSPACE ERROR", error);
+            const errormessage = error?.data?.title?.[0] || "An error occurred";
             toast({
-                title: "An error occured",
+                title: errormessage,
                 variant: "destructive"
             })
         }

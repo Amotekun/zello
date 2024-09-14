@@ -10,10 +10,12 @@ interface InfoProps {
 export const Info: React.FC<InfoProps> = ({
     params
 }) => {
-    console.log("WORKSPACE SLUG PARAMETER:", params.workspaceSlug)
     const { workspaces } = getWorkSpaces();
+    const {workspaceSlug} = params
 
-    const workspace =  workspaces.find(w => w.slug === params.workspaceSlug);
+    console.log("WORKSPACE SLUG PARAMETER:", workspaceSlug)
+
+    const workspace =  workspaces.find(w => w.slug === workspaceSlug);
 
     
     return (

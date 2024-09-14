@@ -1,6 +1,14 @@
+import { ActivityItem } from "@/components/activity-item";
+import { ActivityLog } from "@/types"
 import { ActivityIcon } from "lucide-react"
 
-export const Activity = () => {
+
+interface ActivityProps {
+    activityLog: ActivityLog[] | undefined;
+}
+export const Activity: React.FC<ActivityProps> = ({
+    activityLog
+}) => {
     return (
         <div className="flex items-start gap-x-3 w-full">
             <ActivityIcon className="w-5 h-5 mt-0.5 text-neutral-700"/>
@@ -9,7 +17,12 @@ export const Activity = () => {
                     Activity
                 </p>
                 <ol>
-
+                    {activityLog?.map((item) => (
+                        <ActivityItem 
+                            key={item.id}
+                            item={item}
+                        />
+                    ))}
                 </ol>
             </div>
         </div>

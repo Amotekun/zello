@@ -42,3 +42,27 @@ export interface CardWithList {
     description: string;
     list: List;
 };
+
+
+
+export enum Actions {
+    CREATE = 'CREATE',
+    UPDATE = 'UPDATE',
+    DELETE = 'DELETE',
+}
+
+export enum EntityType {
+    BOARD = 'BOARD',
+    LIST = 'LIST',
+    CARD = 'CARD',
+}
+
+export interface ActivityLog {
+    id: string;
+    action: Actions;
+    entity_type: EntityType;
+    entity_title: string; 
+    user_name: string;
+    created_at: string;
+}
+
