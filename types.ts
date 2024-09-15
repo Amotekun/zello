@@ -66,3 +66,6 @@ export interface ActivityLog {
     created_at: string;
 }
 
+export interface WorkspaceLimit {
+    available_count: number;
+}

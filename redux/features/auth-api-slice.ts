@@ -4,6 +4,7 @@ import {
     Boards,
     CardWithList,
     ListWithCards,
+    WorkspaceLimit,
     Workspaces
 } from "@/types";
 
@@ -63,6 +64,10 @@ const authApiSlice = apiSlice.injectEndpoints({
                 }
             }
         }),
+        retrieveWorkspaceLimit: builder.query<WorkspaceLimit, string | undefined>({
+            query: ( workspaceSlug ) => `/workspace_board_limit/${workspaceSlug}/limit/`
+        }),
+
         register: builder.mutation({
             query: ({
                 first_name,
@@ -292,6 +297,7 @@ export const {
     useRetrieveListQuery,
     useRetrieveCardQuery,
     useRetrieveActivityLogQuery,
+    useRetrieveWorkspaceLimitQuery,
     useRegisterMutation,
     useActivationMutation,
     useLoginMutation,

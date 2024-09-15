@@ -2,7 +2,8 @@
 
 import { BoardFormPopover } from "@/components/form/form-board-popover";
 import { Hint } from "@/components/hint";
-import { useRetrieveBoardsQuery } from "@/redux/features/auth-api-slice";
+import { MAX_BOARD_COUNT } from "@/constant/boards";
+import { useRetrieveBoardsQuery, useRetrieveWorkspaceLimitQuery } from "@/redux/features/auth-api-slice";
 import { HelpCircle, User2 } from "lucide-react"
 import Link from "next/link";
 
@@ -15,13 +16,17 @@ export const BoardList: React.FC<BoardListParams> = ({
 }) => {
     const {workspaceSlug} = params;
 
-    console.log("WORKSPACE SLUG :", workspaceSlug);
+    const {
+        data: boards, 
+        error: boardError, 
+    } = useRetrieveBoardsQuery(workspaceSlug);
+   
+    const {
+        data: workspaceLimit, 
+        error: workspaceLimitError
+    } = useRetrieveWorkspaceLimitQuery(workspaceSlug);
 
-    const {data: boards, error, isLoading} = useRetrieveBoardsQuery(workspaceSlug);
-
-    console.log("error", error);
-    console.log("isLoading", isLoading);
-    console.log("boardList", boards);
+    console
 
     return (
         <div className="space-y-4">
@@ -56,7 +61,7 @@ export const BoardList: React.FC<BoardListParams> = ({
                             Create new board
                         </p>
                         <span className="text-sm">
-                            5 free boards
+                            {workspaceLimit?.available_count} / {MAX_BOARD_COUNT} free boards.
                             {/* TODO: ADD SUBSCRIPTION LATER */}
                         </span>
                         <Hint

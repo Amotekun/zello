@@ -99,9 +99,11 @@ export const BoardFormPopover: React.FC<BoardFormPopoverProps> = ({
             router.refresh();
             closeRef.current?.click();
         } catch (error: any) {
-            console.log("BOARD ERROR", error);
+
+            const titleError = error.data?.title?.[0];
+            const errorError = error?.data?.error;
             toast({
-                title: "An error occured",
+                title: titleError || errorError,
                 variant: "destructive"
             })
         }
