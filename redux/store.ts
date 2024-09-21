@@ -4,6 +4,7 @@ import authReducer from './features/auth-slice';
 import storeModalReducer from './features/store-modal-slice';
 import MobileSidebarReducer from './features/mobile-sidebar';  
 import cardModalReducer from './features/card-modal-slice';
+import proModalReducer from './features/pro-modal-slice';
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
         storeModal: storeModalReducer,
         MobileSidebar: MobileSidebarReducer,
         cardModal: cardModalReducer,
+        proModal: proModalReducer,
 
 
     },

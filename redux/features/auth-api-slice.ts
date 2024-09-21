@@ -287,6 +287,12 @@ const authApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
             }),
         }),
+        stripe: builder.mutation({
+            query: ({workspaceSlug}) => ({
+                url: `/stripe/${workspaceSlug}/`,
+                method: 'POST',
+            })
+        }),
     }),
 });
 
@@ -313,5 +319,6 @@ export const {
     useDuplicateListMutation,
     useCardUpdateMutation,
     useCardDeleteMutation,
-    useCardDuplicateMutation
+    useCardDuplicateMutation,
+    useStripeMutation,
 } = authApiSlice;

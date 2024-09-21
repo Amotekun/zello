@@ -25,6 +25,8 @@ import { useBoardsMutation } from "@/redux/features/auth-api-slice";
 import { useRouter } from "next/navigation";
 import { ElementRef, useRef } from "react";
 import { FormPicker } from "./form-picker";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { openModal } from "@/redux/features/pro-modal-slice";
 
 
 interface BoardFormPopoverProps {
@@ -41,6 +43,8 @@ export const BoardFormPopover: React.FC<BoardFormPopoverProps> = ({
     params,
     align = "start",
 }) => {
+    const dispatch = useAppDispatch()
+    const {isOpen} = useAppSelector((state) => state.proModal);
 
     const {workspaceSlug} = params || {};
 
@@ -80,7 +84,7 @@ export const BoardFormPopover: React.FC<BoardFormPopoverProps> = ({
 
             const slug = generateSlug(title)
 
-            const payload = await board({
+            await board({
                 title,
                 slug,
                 image_id,
@@ -99,7 +103,7 @@ export const BoardFormPopover: React.FC<BoardFormPopoverProps> = ({
             router.refresh();
             closeRef.current?.click();
         } catch (error: any) {
-
+            dispatch(openModal())
             const titleError = error.data?.title?.[0];
             const errorError = error?.data?.error;
             toast({

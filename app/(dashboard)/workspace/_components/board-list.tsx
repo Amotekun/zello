@@ -61,7 +61,7 @@ export const BoardList: React.FC<BoardListParams> = ({
                             Create new board
                         </p>
                         <span className="text-sm">
-                            {workspaceLimit?.available_count} / {MAX_BOARD_COUNT} free boards.
+                            {MAX_BOARD_COUNT - (workspaceLimit?.available_count ?? 0)}  free boards.
                             {/* TODO: ADD SUBSCRIPTION LATER */}
                         </span>
                         <Hint
