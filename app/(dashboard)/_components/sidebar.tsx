@@ -52,6 +52,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
     const handleOpenModal = () => {
         dispatch(openModal());
+        
     };
 
     /* TODO: ADD A SKELETON HERE */

@@ -35,13 +35,15 @@ interface BoardFormPopoverProps {
     sideOffset?: number;
     align?: "start" | "center" | "end";
     children: React.ReactNode;
+    className?: string;
 }
 export const BoardFormPopover: React.FC<BoardFormPopoverProps> = ({
-    side = "right",
-    sideOffset = 40,
+    side,
+    sideOffset = 20,
     children,
     params,
-    align = "start",
+    align,
+    className,
 }) => {
     const dispatch = useAppDispatch()
     const {isOpen} = useAppSelector((state) => state.proModal);
@@ -103,9 +105,10 @@ export const BoardFormPopover: React.FC<BoardFormPopoverProps> = ({
             router.refresh();
             closeRef.current?.click();
         } catch (error: any) {
-            dispatch(openModal())
             const titleError = error.data?.title?.[0];
             const errorError = error?.data?.error;
+            
+            {errorError && dispatch(openModal())}
             toast({
                 title: titleError || errorError,
                 variant: "destructive"
@@ -123,7 +126,7 @@ export const BoardFormPopover: React.FC<BoardFormPopoverProps> = ({
                 side={side}
                 sideOffset={sideOffset}
                 align={align}
-                className=""
+                className={className}
             >
                 <div className="text-sm font-medium text-neutral-600 pb-4">
                     Create board

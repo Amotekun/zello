@@ -1,6 +1,7 @@
 "use client";
 
 import { getWorkSpaces } from "@/actions/use-workspaces"
+import { useRetrieveCheckIsUpgradedQuery } from "@/redux/features/auth-api-slice";
 import { CreditCard, Layout } from "lucide-react"
 
 interface InfoProps {
@@ -13,7 +14,12 @@ export const Info: React.FC<InfoProps> = ({
     const { workspaces } = getWorkSpaces();
     const {workspaceSlug} = params
 
-    console.log("WORKSPACE SLUG PARAMETER:", workspaceSlug)
+    const { 
+        data: isUpgraded,  
+        error: isUpgradedError
+    } = useRetrieveCheckIsUpgradedQuery(workspaceSlug);
+
+    
 
     const workspace =  workspaces.find(w => w.slug === workspaceSlug);
 
@@ -27,8 +33,7 @@ export const Info: React.FC<InfoProps> = ({
                 </p>
                 <div className="flex items-center text-muted-foreground">
                     <CreditCard  className="h-3 w-3 mr-1"/>
-                    {/* TODO: ADD A SUBSCRIPTION HERE LATER */}
-                    free
+                    {isUpgraded ? "Upgraded" : "free plan"}
                 </div>
             </div>
         </div>

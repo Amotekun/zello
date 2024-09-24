@@ -67,7 +67,9 @@ const authApiSlice = apiSlice.injectEndpoints({
         retrieveWorkspaceLimit: builder.query<WorkspaceLimit, string | undefined>({
             query: ( workspaceSlug ) => `/workspace_board_limit/${workspaceSlug}/limit/`
         }),
-
+        retrieveCheckIsUpgraded: builder.query<boolean, string>({
+            query: (workspaceSlug) => `/upgrade/${workspaceSlug}/`,
+        }),
         register: builder.mutation({
             query: ({
                 first_name,
@@ -305,6 +307,7 @@ export const {
     useRetrieveActivityLogQuery,
     useRetrieveWorkspaceLimitQuery,
     useRegisterMutation,
+    useRetrieveCheckIsUpgradedQuery,
     useActivationMutation,
     useLoginMutation,
     useLogoutMutation,

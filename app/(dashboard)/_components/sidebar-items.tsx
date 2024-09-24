@@ -1,9 +1,18 @@
 import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { closeSheet } from "@/redux/features/mobile-sidebar";
+
+import { useAppDispatch } from "@/redux/hooks";
 import { Workspaces } from "@/types";
-import { Activity, CreditCard, Layout, Pen, Settings } from "lucide-react"
+import { 
+    Activity, 
+    CreditCard,
+    Layout, 
+    Pen
+} from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useRef } from "react";
 
 
 interface SidebarItemsProps {
@@ -17,7 +26,9 @@ export const SidebarItems: React.FC<SidebarItemsProps> = ({
     workspaces,
     onOpen,
 }) => {
+    const accordionItemRef = useRef<HTMLDivElement>(null); 
     const router = useRouter();
+    const dispatch = useAppDispatch();
 
     const routes = [
         {
@@ -30,11 +41,7 @@ export const SidebarItems: React.FC<SidebarItemsProps> = ({
             icon: <Activity />,
             href: `/workspace/${workspaces.slug}/activity`
         },
-        {
-            label: "Settings",
-            icon: <Settings />,
-            href: `/workspace/${workspaces.slug}/settings`
-        },
+        /* TODO: ADD SETTINGS FEATURES */
         {
             label: "Billings",
             icon: <CreditCard />,
@@ -43,14 +50,15 @@ export const SidebarItems: React.FC<SidebarItemsProps> = ({
     ];
 
     const pushRef = (href: string) => {
-        router.push(href);
+        router.push(href); 
+        dispatch(closeSheet());      
     }
-
-
+/*  */
     return (
         <AccordionItem
             value={workspaces.id}
             className="border-none"
+            ref={accordionItemRef}
         >
             <AccordionTrigger
                 onClick={() => onOpen(workspaces.id)}

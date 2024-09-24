@@ -3,9 +3,11 @@
 import { BoardFormPopover } from "@/components/form/form-board-popover";
 import { Hint } from "@/components/hint";
 import { MAX_BOARD_COUNT } from "@/constant/boards";
-import { useRetrieveBoardsQuery, useRetrieveWorkspaceLimitQuery } from "@/redux/features/auth-api-slice";
+import { cn } from "@/lib/utils";
+import { useRetrieveBoardsQuery, useRetrieveCheckIsUpgradedQuery, useRetrieveWorkspaceLimitQuery } from "@/redux/features/auth-api-slice";
 import { HelpCircle, User2 } from "lucide-react"
 import Link from "next/link";
+import { useMediaQuery } from "usehooks-ts";
 
 interface BoardListParams {
     params: {workspaceSlug: string}
@@ -16,17 +18,12 @@ export const BoardList: React.FC<BoardListParams> = ({
 }) => {
     const {workspaceSlug} = params;
 
-    const {
-        data: boards, 
-        error: boardError, 
-    } = useRetrieveBoardsQuery(workspaceSlug);
-   
-    const {
-        data: workspaceLimit, 
-        error: workspaceLimitError
-    } = useRetrieveWorkspaceLimitQuery(workspaceSlug);
+    const { data: boards } = useRetrieveBoardsQuery(workspaceSlug);
+    const { data: workspaceLimit } = useRetrieveWorkspaceLimitQuery(workspaceSlug);/*  */
+    const { data: isUpgraded } = useRetrieveCheckIsUpgradedQuery(workspaceSlug);
 
-    console
+    const isMobile = useMediaQuery("(max-width: 640px)");
+    
 
     return (
         <div className="space-y-4">
@@ -52,6 +49,9 @@ export const BoardList: React.FC<BoardListParams> = ({
 
                 <BoardFormPopover
                     params={params}
+                    side = "right"
+                    sideOffset = {isMobile ? -140 : 40}
+                    align = {isMobile ? "center" : "start"}
                 >
                     <div
                         role="button"
@@ -61,7 +61,7 @@ export const BoardList: React.FC<BoardListParams> = ({
                             Create new board
                         </p>
                         <span className="text-sm">
-                            {MAX_BOARD_COUNT - (workspaceLimit?.available_count ?? 0)}  free boards.
+                            {isUpgraded ? "Unlimited boards" : MAX_BOARD_COUNT - (workspaceLimit?.available_count ?? 0) + " boards left"} 
                             {/* TODO: ADD SUBSCRIPTION LATER */}
                         </span>
                         <Hint
